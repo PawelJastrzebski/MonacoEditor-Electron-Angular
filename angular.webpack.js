@@ -1,11 +1,18 @@
 /**
  * Custom angular webpack configuration
  */
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (config, options) => {
     config.target = 'electron-renderer';
+    config.plugins.push(new CopyWebpackPlugin([{
+      from: 'node_modules/monaco-editor/min/vs',
+      to: 'vs',
+    }]));
+
     if (options.customWebpackConfig.target) {
         config.target = options.customWebpackConfig.target;
+
     } else if (options.fileReplacements) {
         for(let fileReplacement of options.fileReplacements) {
             if (fileReplacement.replace !== 'src/environments/environment.ts') {
